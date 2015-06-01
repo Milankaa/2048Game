@@ -16,3 +16,4 @@ public class Main {
         frame.setLocation(30, 30);
     }
 }
+ 
