@@ -139,11 +139,6 @@ public class TilePanel extends javax.swing.JPanel {
         Random r1 = new Random();
         int x = r1.nextInt(4);
         int y = r1.nextInt(4);
-        System.out.print(num);
-        System.out.print(' ');
-        System.out.print(x);
-        System.out.print(',');
-        System.out.print(y);
         if (FilledTiles[x][y].TileValue == 0) {
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j < 4; j++) {
@@ -184,24 +179,14 @@ public class TilePanel extends javax.swing.JPanel {
         int POSITION_X = positionX(x);
         int POSITION_Y = positionY(y);
 
-
-        
         String s = valueOf(value);
         int w = TextWidth(s);
         int h = TextHeight(s);
-
-        System.out.print(' ');
-        System.out.print("v=");
-        System.out.print(FilledTiles[x][y].TileValue);
-        System.out.print(';');
-
         g.setFont(font);
         g.setColor(tile.TileBackground(value));
         g.fillRect(POSITION_X, POSITION_Y, TILE_SIZE, TILE_SIZE);
         g.setColor(Color.GRAY);
-
         g.drawString(String.valueOf(value), POSITION_X + (TILE_SIZE - w) / 2, POSITION_Y + (TILE_SIZE + h) / 2 - 8);
-
     }
 
     @Override
@@ -214,10 +199,6 @@ public class TilePanel extends javax.swing.JPanel {
                 if (FilledTiles[i][j].TileValue != 0) {
                     drawTile(g, FilledTiles[i][j], i, j);
                 }
-                System.out.print(' ');
-                System.out.print("vv=");
-                System.out.print(FilledTiles[i][j].TileValue);
-                System.out.print(';');
             }
         }
     }
