@@ -13,14 +13,12 @@ import java.util.Random;
 public class TilePanel extends javax.swing.JPanel {
 
     Font font = new Font("Arial", Font.BOLD, 45);
-    int TILE_SIZE = 100;
+    static final int TILE_SIZE = 100;
     Tile[][] FilledTiles = new Tile[4][4];
-    Random r1 = new Random();
-    int x = r1.nextInt(4);
-    int y = r1.nextInt(4);
 
     public TilePanel() {
-
+        setFocusable(true);
+        newGame();
         initComponents();
     }
 
@@ -67,41 +65,41 @@ public class TilePanel extends javax.swing.JPanel {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(NewGameButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(BestScoreLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                            .addComponent(ScoreLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))))
-                .addGap(29, 29, 29))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(NewGameButton))
+                                .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(BestScoreLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                                .addComponent(ScoreLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))))
+                        .addGap(29, 29, 29))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(ScoreLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(BestScoreLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(9, 9, 9)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jLabel2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(NewGameButton)))
-                .addContainerGap(472, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                        .addComponent(ScoreLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(BestScoreLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(9, 9, 9)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                        .addGap(20, 20, 20)
+                                        .addComponent(jLabel2))
+                                .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(NewGameButton)))
+                        .addContainerGap(472, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -132,17 +130,31 @@ public class TilePanel extends javax.swing.JPanel {
     }
 
     private void newGame() {
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                FilledTiles[i][j] = new Tile();
-            }
-        }
         addTile();
-        addTile();
+        // addTile();
     }
 
     private void addTile() {
-        FilledTiles[x][y].TileValue = startValue();
+        int num = startValue();
+        Random r1 = new Random();
+        int x = r1.nextInt(4);
+        int y = r1.nextInt(4);
+        System.out.print(num);
+        System.out.print(' ');
+        System.out.print(x);
+        System.out.print(',');
+        System.out.print(y);
+        if (FilledTiles[x][y].TileValue == 0) {
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
+                    if (i != x || j != y) {
+                        FilledTiles[i][j].TileValue = 0;
+                    } else {
+                        FilledTiles[i][j].TileValue = num;
+                    }
+                }
+            }
+        }
     }
 
     private int startValue() {
@@ -156,11 +168,11 @@ public class TilePanel extends javax.swing.JPanel {
     }
 
     private static int positionX(int x) {
-        return 25 + x * 105;
+        return 25 + x * (TILE_SIZE + 5);
     }
 
     private static int positionY(int y) {
-        return 155 + y * 105;
+        return 155 + y * (TILE_SIZE + 5);
     }
 
     private void drawTile(Graphics g2, Tile tile, int x, int y) {
@@ -172,23 +184,29 @@ public class TilePanel extends javax.swing.JPanel {
         int POSITION_X = positionX(x);
         int POSITION_Y = positionY(y);
 
+
+        
         String s = valueOf(value);
         int w = TextWidth(s);
         int h = TextHeight(s);
 
+        System.out.print(' ');
+        System.out.print("v=");
+        System.out.print(FilledTiles[x][y].TileValue);
+        System.out.print(';');
+
         g.setFont(font);
         g.setColor(tile.TileBackground(value));
         g.fillRect(POSITION_X, POSITION_Y, TILE_SIZE, TILE_SIZE);
-        g.setColor(tile.TileValueColor());
-        if (value != 0) {
-            g.drawString(String.valueOf(value), POSITION_X + (TILE_SIZE - w) / 2, POSITION_Y + (TILE_SIZE + h) / 2 - 8);
-        }
+        g.setColor(Color.GRAY);
+
+        g.drawString(String.valueOf(value), POSITION_X + (TILE_SIZE - w) / 2, POSITION_Y + (TILE_SIZE + h) / 2 - 8);
+
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        newGame();
         g.setColor(Color.LIGHT_GRAY);
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 4; i++) {
@@ -196,6 +214,10 @@ public class TilePanel extends javax.swing.JPanel {
                 if (FilledTiles[i][j].TileValue != 0) {
                     drawTile(g, FilledTiles[i][j], i, j);
                 }
+                System.out.print(' ');
+                System.out.print("vv=");
+                System.out.print(FilledTiles[i][j].TileValue);
+                System.out.print(';');
             }
         }
     }
