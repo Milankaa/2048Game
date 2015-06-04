@@ -14,6 +14,15 @@ public class Tile {
 
     }
 
+    public static int getTileValue() {
+        return TileValue;
+    }
+
+    public static void setTileValue(int Value) {
+        Tile.TileValue = Value;
+    }
+    
+
     public boolean isEmpty() {
         return TileValue == 0;
     }
