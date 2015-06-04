@@ -4,22 +4,22 @@ import java.awt.Color;
 
 public class Tile {
 
-    static int TileValue;
+    private int TileValue;
 
     public Tile(int value) {
-        value = TileValue;
+        TileValue = value;
     }
 
     public Tile() {
 
     }
 
-    public static int getTileValue() {
+    public int getTileValue() {
         return TileValue;
     }
 
-    public static void setTileValue(int Value) {
-        Tile.TileValue = Value;
+    public void setTileValue(int Value) {
+        TileValue = Value;
     }
     
 

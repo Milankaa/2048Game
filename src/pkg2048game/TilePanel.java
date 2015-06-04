@@ -18,7 +18,9 @@ public class TilePanel extends javax.swing.JPanel {
 
     public TilePanel() {
         setFocusable(true);
-        
+        for(int i=0; i<4; i++)
+            for(int j=0; j<4; j++)
+                FilledTiles[i][j] = new Tile();
         initComponents();
     }
 
@@ -136,27 +138,28 @@ public class TilePanel extends javax.swing.JPanel {
 
     private void addTile() {
         int num = startValue();
+        int x;
+        int y;
         Random r1 = new Random();
-        int x = r1.nextInt(4);
-        int y = r1.nextInt(4);
+        do{
+            x = r1.nextInt(4);
+            y = r1.nextInt(4);
+        }
+        while(FilledTiles[x][y].getTileValue() != 0);
         System.out.print(num);
         System.out.print(' ');
         System.out.print(x);
         System.out.print(',');
         System.out.print(y);
-        if (FilledTiles[x][y].getTileValue() == 0) {
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    if (i != x || j != y) {
-                        FilledTiles[i][j].setTileValue(0);
-                    } else {
-                        FilledTiles[i][j].setTileValue(num);
-                    }
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (i == x && j == y) {
+                    FilledTiles[i][j].setTileValue(num);
                 }
             }
         }
     }
-
+    
     private int startValue() {
         Random r = new Random();
         int d = r.nextInt(10);
@@ -192,7 +195,7 @@ public class TilePanel extends javax.swing.JPanel {
 
         System.out.print(' ');
         System.out.print("v=");
-        System.out.print(FilledTiles[x][y].TileValue);
+        System.out.print(FilledTiles[x][y].getTileValue());
         System.out.print(';');
 
         g.setFont(font);
@@ -218,8 +221,8 @@ public class TilePanel extends javax.swing.JPanel {
                 }
                 System.out.print(' ');
                 System.out.print("vv=");
-                System.out.print(FilledTiles[i][j].TileValue);
-                System.out.print(';');
+                System.out.print(FilledTiles[i][j].getTileValue());
+                System.out.println(';');
             }
         }
     }
