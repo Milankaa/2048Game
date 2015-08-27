@@ -35,20 +35,20 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
         ScoreLabel = new javax.swing.JLabel();
         BestScoreLabel = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(204, 204, 204));
+        setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(450, 600));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 48));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 72));
         jLabel1.setForeground(new java.awt.Color(51, 102, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("2048");
 
-        jLabel2.setFont(new java.awt.Font("Arial", 0, 17)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 0, 204));
         jLabel2.setText(" Join the numbers and get to the 2048 tile! ");
 
-        NewGameButton.setBackground(new java.awt.Color(204, 204, 204));
-        NewGameButton.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        NewGameButton.setBackground(new java.awt.Color(255, 255, 255));
+        NewGameButton.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         NewGameButton.setText("New Game");
         NewGameButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -56,7 +56,7 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
             }
         });
 
-        ScoreLabel.setBackground(new java.awt.Color(204, 204, 204));
+        ScoreLabel.setBackground(new java.awt.Color(255, 255, 255));
         ScoreLabel.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         ScoreLabel.setText(" SCORE : ");
         ScoreLabel.setToolTipText("");
@@ -104,9 +104,10 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void NewGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewGameButtonActionPerformed
-
-    }//GEN-LAST:event_NewGameButtonActionPerformed
+    private void NewGameButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        newGame();
+        repaint();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel BestScoreLabel;
@@ -277,7 +278,7 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             down();
-
+            
         }
         if (e.getKeyCode() == KeyEvent.VK_UP) {
             up();
