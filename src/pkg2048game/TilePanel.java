@@ -38,16 +38,18 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
         setBackground(new java.awt.Color(204, 204, 204));
         setPreferredSize(new java.awt.Dimension(450, 600));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 48));
+        jLabel1.setForeground(new java.awt.Color(51, 102, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("2048");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel2.setText(" Join the numbers and get to the 2048 tile!");
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 17)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 204));
+        jLabel2.setText(" Join the numbers and get to the 2048 tile! ");
 
         NewGameButton.setBackground(new java.awt.Color(204, 204, 204));
-        NewGameButton.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        NewGameButton.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         NewGameButton.setText("New Game");
-        NewGameButton.setToolTipText("");
         NewGameButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NewGameButtonActionPerformed(evt);
@@ -70,39 +72,35 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
+                        .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(NewGameButton))
                                 .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(BestScoreLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                                                .addComponent(ScoreLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))))
-                        .addGap(29, 29, 29))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(BestScoreLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(ScoreLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createSequentialGroup()
                                         .addComponent(ScoreLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(BestScoreLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(9, 9, 9)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                        .addGap(20, 20, 20)
-                                        .addComponent(jLabel2))
-                                .addGroup(layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(NewGameButton)))
-                        .addContainerGap(472, Short.MAX_VALUE))
+                                        .addComponent(BestScoreLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(NewGameButton)
+                                .addComponent(jLabel2))
+                        .addContainerGap(481, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -159,7 +157,7 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
             }
         }
     }
-    
+
     private int startValue() {
         Random r = new Random();
         int d = r.nextInt(10);
@@ -177,7 +175,7 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
     private static int positionY(int y) {
         return 155 + y * (TILE_SIZE + 5);
     }
-    
+
     public void down() {
         for (int i = 0; i <= 3; i++) {
             int d = 0;
@@ -191,6 +189,49 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
             }
         }
     }
+
+    public void up() {
+        for (int i = 0; i <= 3; i++) {
+            int d = 0;
+            for (int j = 0; j <= 3; j++) {
+                if (Tiles[i][j].getTileValue() == 0) {
+                    d++;
+                } else if (Tiles[i][j].getTileValue() != 0 && j > 0 && d > 0) {
+                    Tiles[i][j - d].setTileValue(Tiles[i][j].getTileValue());
+                    Tiles[i][j].setTileValue(0);
+                }
+            }
+        }
+    }
+
+    private void right() {
+        for (int j = 0; j <= 3; j++) {
+            int d = 0;
+            for (int i = 3; i >= 0; i--) {
+                if (Tiles[i][j].getTileValue() == 0) {
+                    d++;
+                } else if (Tiles[i][j].getTileValue() != 0 && i < 3 && d > 0) {
+                    Tiles[i + d][j].setTileValue(Tiles[i][j].getTileValue());
+                    Tiles[i][j].setTileValue(0);
+                }
+            }
+        }
+    }
+
+    private void left() {
+        for (int j = 0; j <= 3; j++) {
+            int d = 0;
+            for (int i = 0; i <= 3; i++) {
+                if (Tiles[i][j].getTileValue() == 0) {
+                    d++;
+                } else if (Tiles[i][j].getTileValue() != 0 && i > 0 && d > 0) {
+                    Tiles[i - d][j].setTileValue(Tiles[i][j].getTileValue());
+                    Tiles[i][j].setTileValue(0);
+                }
+            }
+        }
+    }
+
     private void drawTile(Graphics g2, Tile tile, int x, int y) {
         Graphics2D g = ((Graphics2D) g2);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -200,8 +241,6 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
         int POSITION_X = positionX(x);
         int POSITION_Y = positionY(y);
 
-
-        
         String s = valueOf(value);
         int w = textWidth(s);
         int h = textHeight(s);
@@ -222,7 +261,7 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
         g.setColor(Color.GRAY);
-        g.fillRect(20, 150, 4 *TILE_SIZE + 25, 4*TILE_SIZE +25);
+        g.fillRect(20, 150, 4 * TILE_SIZE + 25, 4 * TILE_SIZE + 25);
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 4; i++) {
                 g.setColor(Color.LIGHT_GRAY);
@@ -234,21 +273,21 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
         }
     }
 
-@Override
+    @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             down();
-            addTile();
+
         }
         if (e.getKeyCode() == KeyEvent.VK_UP) {
-           //up();
+            up();
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            //left();
+            left();
         }
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-           // right();
-           
+            right();
+
         }
         repaint();
     }
