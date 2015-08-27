@@ -5,12 +5,14 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import static java.lang.String.valueOf;
 import java.util.Random;
 
-public class TilePanel extends javax.swing.JPanel {
+public class TilePanel extends javax.swing.JPanel implements KeyListener {
 
     Font font = new Font("Arial", Font.BOLD, 45);
     static final int TILE_SIZE = 100;
@@ -18,6 +20,7 @@ public class TilePanel extends javax.swing.JPanel {
 
     public TilePanel() {
         setFocusable(true);
+        addKeyListener(this);
         initComponents();
         newGame();
     }
@@ -174,7 +177,20 @@ public class TilePanel extends javax.swing.JPanel {
     private static int positionY(int y) {
         return 155 + y * (TILE_SIZE + 5);
     }
-
+    
+    public void down() {
+        for (int i = 0; i <= 3; i++) {
+            int d = 0;
+            for (int j = 3; j >= 0; j--) {
+                if (Tiles[i][j].getTileValue() == 0) {
+                    d++;
+                } else if (Tiles[i][j].getTileValue() != 0 && j < 3 && d > 0) {
+                    Tiles[i][j + d].setTileValue(Tiles[i][j].getTileValue());
+                    Tiles[i][j].setTileValue(0);
+                }
+            }
+        }
+    }
     private void drawTile(Graphics g2, Tile tile, int x, int y) {
         Graphics2D g = ((Graphics2D) g2);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -216,5 +232,32 @@ public class TilePanel extends javax.swing.JPanel {
                 }
             }
         }
+    }
+
+@Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            down();
+            addTile();
+        }
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+           //up();
+        }
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            //left();
+        }
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+           // right();
+           
+        }
+        repaint();
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
     }
 }
