@@ -14,14 +14,12 @@ public class TilePanel extends javax.swing.JPanel {
 
     Font font = new Font("Arial", Font.BOLD, 45);
     static final int TILE_SIZE = 100;
-    Tile[][] FilledTiles = new Tile[4][4];
+    Tile[][] Tiles = new Tile[4][4];
 
     public TilePanel() {
         setFocusable(true);
-        for(int i=0; i<4; i++)
-            for(int j=0; j<4; j++)
-                FilledTiles[i][j] = new Tile();
         initComponents();
+        newGame();
     }
 
     @SuppressWarnings("unchecked")
@@ -117,14 +115,14 @@ public class TilePanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
 
-    private int TextWidth(String s) {
+    private int textWidth(String s) {
         AffineTransform affinetransform = new AffineTransform();
         FontRenderContext frc = new FontRenderContext(affinetransform, true, true);
         int w = (int) (font.getStringBounds(s, frc).getWidth());
         return w;
     }
 
-    private int TextHeight(String s) {
+    private int textHeight(String s) {
         AffineTransform affinetransform = new AffineTransform();
         FontRenderContext frc = new FontRenderContext(affinetransform, true, true);
         int h = (int) (font.getStringBounds(s, frc).getHeight());
@@ -132,6 +130,11 @@ public class TilePanel extends javax.swing.JPanel {
     }
 
     private void newGame() {
+        for (int i = 0; i <= 3; i++) {
+            for (int j = 0; j <= 3; j++) {
+                Tiles[i][j] = new Tile();
+            }
+        }
         addTile();
         addTile();
     }
@@ -141,20 +144,14 @@ public class TilePanel extends javax.swing.JPanel {
         int x;
         int y;
         Random r1 = new Random();
-        do{
+        do {
             x = r1.nextInt(4);
             y = r1.nextInt(4);
-        }
-        while(FilledTiles[x][y].getTileValue() != 0);
-        System.out.print(num);
-        System.out.print(' ');
-        System.out.print(x);
-        System.out.print(',');
-        System.out.print(y);
+        } while (Tiles[x][y].getTileValue() != 0);
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (i == x && j == y) {
-                    FilledTiles[i][j].setTileValue(num);
+                    Tiles[i][j].setTileValue(num);
                 }
             }
         }
@@ -190,39 +187,33 @@ public class TilePanel extends javax.swing.JPanel {
 
         
         String s = valueOf(value);
-        int w = TextWidth(s);
-        int h = TextHeight(s);
-
-        System.out.print(' ');
-        System.out.print("v=");
-        System.out.print(FilledTiles[x][y].getTileValue());
-        System.out.print(';');
+        int w = textWidth(s);
+        int h = textHeight(s);
 
         g.setFont(font);
         g.setColor(tile.TileBackground(value));
-        g.fillRect(POSITION_X, POSITION_Y, TILE_SIZE, TILE_SIZE);
+        g.fillRoundRect(POSITION_X, POSITION_Y, TILE_SIZE, TILE_SIZE, 15, 15);
         g.setColor(Color.GRAY);
-
         g.drawString(String.valueOf(value), POSITION_X + (TILE_SIZE - w) / 2, POSITION_Y + (TILE_SIZE + h) / 2 - 8);
 
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paint(Graphics g2) {
+        Graphics2D g = ((Graphics2D) g2);
+
         super.paint(g);
-        newGame();
-        g.setColor(Color.LIGHT_GRAY);
-        //FilledTiles[1][0].TileValue=2;
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
+        g.setColor(Color.GRAY);
+        g.fillRect(20, 150, 4 *TILE_SIZE + 25, 4*TILE_SIZE +25);
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 4; i++) {
+                g.setColor(Color.LIGHT_GRAY);
                 g.fillRoundRect(positionX(i), positionY(j), TILE_SIZE, TILE_SIZE, 15, 15);
-                if (FilledTiles[i][j].getTileValue() != 0) {
-                    drawTile(g, FilledTiles[i][j], i, j);
+                if (Tiles[i][j].getTileValue() != 0) {
+                    drawTile(g, Tiles[i][j], i, j);
                 }
-                System.out.print(' ');
-                System.out.print("vv=");
-                System.out.print(FilledTiles[i][j].getTileValue());
-                System.out.println(';');
             }
         }
     }
