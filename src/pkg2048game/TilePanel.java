@@ -178,6 +178,51 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
         return 155 + y * (TILE_SIZE + 5);
     }
 
+    void mergeTilesDown() {
+        for (int i = 0; i <= 3; i++) {
+            for (int j = 3; j > 0; j--) {
+                if (Tiles[i][j].getTileValue() == Tiles[i][j - 1].getTileValue()) {
+                    Tiles[i][j].setTileValue(2 * Tiles[i][j].getTileValue());
+                    Tiles[i][j - 1].setTileValue(0);
+                }
+            }
+        }
+    }
+
+    void mergeTilesUp() {
+        for (int i = 0; i <= 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (Tiles[i][j].getTileValue() == Tiles[i][j + 1].getTileValue()) {
+                    Tiles[i][j].setTileValue(2 * Tiles[i][j].getTileValue());
+                    Tiles[i][j + 1].setTileValue(0);
+                }
+            }
+        }
+    }
+
+    void mergeTilesRight() {
+        for (int i = 3; i > 0; i--) {
+            for (int j = 0; j < 4; j++) {
+                if (Tiles[i][j].getTileValue() == Tiles[i - 1][j].getTileValue()) {
+                    Tiles[i][j].setTileValue(2 * Tiles[i][j].getTileValue());
+                    Tiles[i - 1][j].setTileValue(0);
+                    
+                }
+            }
+        }
+    }
+
+    void mergeTilesLeft() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (Tiles[i][j].getTileValue() == Tiles[i + 1][j].getTileValue()) {
+                    Tiles[i][j].setTileValue(2 * Tiles[i][j].getTileValue());
+                    Tiles[i + 1][j].setTileValue(0);
+                                    }
+            }
+        }
+    }
+
     public void down() {
         for (int i = 0; i <= 3; i++) {
             int d = 0;
@@ -188,9 +233,9 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
                     Tiles[i][j + d].setTileValue(Tiles[i][j].getTileValue());
                     Tiles[i][j].setTileValue(0);
                     TileMoved = true;
+                } else {
+                    TileMoved = false;
                 }
-                else
-                TileMoved = false;
             }
         }
     }
@@ -204,10 +249,10 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
                 } else if (Tiles[i][j].getTileValue() != 0 && j > 0 && d > 0) {
                     Tiles[i][j - d].setTileValue(Tiles[i][j].getTileValue());
                     Tiles[i][j].setTileValue(0);
-                TileMoved = true;
+                    TileMoved = true;
+                } else {
+                    TileMoved = false;
                 }
-                else
-                TileMoved = false;
             }
         }
     }
@@ -221,10 +266,10 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
                 } else if (Tiles[i][j].getTileValue() != 0 && i < 3 && d > 0) {
                     Tiles[i + d][j].setTileValue(Tiles[i][j].getTileValue());
                     Tiles[i][j].setTileValue(0);
-                TileMoved = true;
+                    TileMoved = true;
+                } else {
+                    TileMoved = false;
                 }
-                else
-                TileMoved = false;
             }
         }
     }
@@ -238,10 +283,10 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
                 } else if (Tiles[i][j].getTileValue() != 0 && i > 0 && d > 0) {
                     Tiles[i - d][j].setTileValue(Tiles[i][j].getTileValue());
                     Tiles[i][j].setTileValue(0);
-                TileMoved = true;
+                    TileMoved = true;
+                } else {
+                    TileMoved = false;
                 }
-                else
-                TileMoved = false;
             }
         }
     }
@@ -291,29 +336,29 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             down();
-            if(TileMoved==true)
-            {
+            mergeTilesDown();
+            if (TileMoved == true) {
                 addTile();
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_UP) {
             up();
-            if(TileMoved==true)
-            {
+            mergeTilesUp();
+            if (TileMoved == true) {
                 addTile();
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             left();
-            if(TileMoved==true)
-            {
+            mergeTilesLeft();
+            if (TileMoved == true) {
                 addTile();
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             right();
-            if(TileMoved==true)
-            {
+            mergeTilesRight();
+            if (TileMoved == true) {
                 addTile();
             }
         }
