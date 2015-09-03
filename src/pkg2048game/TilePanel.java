@@ -179,33 +179,42 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
     }
 
     void mergeTilesDown() {
+        TileMoved = false;
         for (int i = 0; i <= 3; i++) {
             for (int j = 3; j > 0; j--) {
                 if (Tiles[i][j].getTileValue() == Tiles[i][j - 1].getTileValue()) {
                     Tiles[i][j].setTileValue(2 * Tiles[i][j].getTileValue());
                     Tiles[i][j - 1].setTileValue(0);
+                    down();
+                    TileMoved = true;
                 }
             }
         }
     }
 
     void mergeTilesUp() {
+        TileMoved = false;
         for (int i = 0; i <= 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (Tiles[i][j].getTileValue() == Tiles[i][j + 1].getTileValue()) {
                     Tiles[i][j].setTileValue(2 * Tiles[i][j].getTileValue());
                     Tiles[i][j + 1].setTileValue(0);
+                    up();
+                    TileMoved = true;
                 }
             }
         }
     }
 
     void mergeTilesRight() {
+        TileMoved = false;
         for (int i = 3; i > 0; i--) {
             for (int j = 0; j < 4; j++) {
                 if (Tiles[i][j].getTileValue() == Tiles[i - 1][j].getTileValue()) {
                     Tiles[i][j].setTileValue(2 * Tiles[i][j].getTileValue());
                     Tiles[i - 1][j].setTileValue(0);
+                    right();
+                    TileMoved = true;
                 }
             }
         }
@@ -217,13 +226,15 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
                 if (Tiles[i][j].getTileValue() == Tiles[i + 1][j].getTileValue()) {
                     Tiles[i][j].setTileValue(2 * Tiles[i][j].getTileValue());
                     Tiles[i + 1][j].setTileValue(0);
-                                    }
+                    left();
+                    TileMoved = true;
+                }
             }
         }
     }
 
     public void down() {
-        int k=0;
+         TileMoved = false;
         for (int i = 0; i <= 3; i++) {
             int d = 0;
             for (int j = 3; j >= 0; j--) {
@@ -233,20 +244,14 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
                     Tiles[i][j + d].setTileValue(Tiles[i][j].getTileValue());
                     Tiles[i][j].setTileValue(0);
                     TileMoved = true;
-                    k=1;
-                } else {
-                    TileMoved = false;
-                }
+                   
+                } 
             }
-        }
-        if(k==1)
-        {
-            TileMoved=true;
         }
     }
 
     public void up() {
-        int k=0;
+        TileMoved = false;
         for (int i = 0; i <= 3; i++) {
             int d = 0;
             for (int j = 0; j <= 3; j++) {
@@ -256,20 +261,13 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
                     Tiles[i][j - d].setTileValue(Tiles[i][j].getTileValue());
                     Tiles[i][j].setTileValue(0);
                     TileMoved = true;
-                    k=1;
-                } else {
-                    TileMoved = false;
                 }
             }
-        }
-        if(k==1)
-        {
-            TileMoved=true;
         }
     }
 
     private void right() {
-        int k=0;
+       TileMoved = false;
         for (int j = 0; j <= 3; j++) {
             int d = 0;
             for (int i = 3; i >= 0; i--) {
@@ -279,20 +277,14 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
                     Tiles[i + d][j].setTileValue(Tiles[i][j].getTileValue());
                     Tiles[i][j].setTileValue(0);
                     TileMoved = true;
-                    k=1;
-                } else {
-                    TileMoved = false;
-                }
+                   
+                } 
             }
-        }
-        if(k==1)
-        {
-            TileMoved=true;
         }
     }
 
     private void left() {
-        int k=0;
+       TileMoved = false;
         for (int j = 0; j <= 3; j++) {
             int d = 0;
             for (int i = 0; i <= 3; i++) {
@@ -301,17 +293,10 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
                 } else if (Tiles[i][j].getTileValue() != 0 && i > 0 && d > 0) {
                     Tiles[i - d][j].setTileValue(Tiles[i][j].getTileValue());
                     Tiles[i][j].setTileValue(0);
-                    TileMoved = true;
-                    k=1;
-                } else {
-                    TileMoved = false;
-                }
+                    TileMoved = true;                    
+                } 
             }
-        }
-        if(k==1)
-        {
-            TileMoved=true;
-        }
+        }        
     }
 
     private void drawTile(Graphics g2, Tile tile, int x, int y) {
