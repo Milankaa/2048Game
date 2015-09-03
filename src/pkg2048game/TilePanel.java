@@ -118,17 +118,17 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
     private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
 
-    private int textWidth(String s) {
+    private int textWidth(String s, Tile tile) {
         AffineTransform affinetransform = new AffineTransform();
         FontRenderContext frc = new FontRenderContext(affinetransform, true, true);
-        int w = (int) (font.getStringBounds(s, frc).getWidth());
+        int w = (int) (tile.TileValueFont().getStringBounds(s, frc).getWidth());
         return w;
     }
 
-    private int textHeight(String s) {
+    private int textHeight(String s,Tile tile) {
         AffineTransform affinetransform = new AffineTransform();
         FontRenderContext frc = new FontRenderContext(affinetransform, true, true);
-        int h = (int) (font.getStringBounds(s, frc).getHeight());
+        int h = (int) (tile.TileValueFont().getStringBounds(s, frc).getHeight());
         return h;
     }
 
@@ -164,7 +164,7 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
         Random r = new Random();
         int d = r.nextInt(10);
         if (d < 8) {
-            return 2;
+            return 2048;
         } else {
             return 4;
         }
@@ -309,15 +309,19 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
         int POSITION_Y = positionY(y);
 
         String s = valueOf(value);
-        int w = textWidth(s);
-        int h = textHeight(s);
+        int w = textWidth(s,tile);
+        int h = textHeight(s,tile);
 
-        g.setFont(font);
+        g.setFont(tile.TileValueFont());
         g.setColor(tile.TileBackground(value));
         g.fillRoundRect(POSITION_X, POSITION_Y, TILE_SIZE, TILE_SIZE, 15, 15);
         g.setColor(tile.TileValueColor());
-        g.drawString(String.valueOf(value), POSITION_X + (TILE_SIZE - w) / 2, POSITION_Y + (TILE_SIZE + h) / 2 - 8);
-
+        g.drawString(String.valueOf(value), POSITION_X + (TILE_SIZE - w) / 2 , POSITION_Y + TILE_SIZE / 2+14);
+        System.out.print(POSITION_Y + (TILE_SIZE + h) / 2);
+        System.out.print("POSITION_y  "); 
+        System.out.print(POSITION_Y);
+        System.out.print("h  ");
+        System.out.print(h);
     }
 
     @Override
