@@ -14,16 +14,20 @@ import java.util.Random;
 
 public class TilePanel extends javax.swing.JPanel implements KeyListener {
 
-    int col = 4;
-    int row = 4;
+    int COL = 4;
+    int ROW = 4;
     int PANEL_WIDTH = 450;
     int PANEL_HEIGHT = 600;
-    Font font = new Font("Arial", Font.BOLD, 45);
+    Font FONT = new Font("Arial", Font.BOLD, 45);
     static final int TILE_SIZE = 100;
-    Tile[][] Tiles = new Tile[col][row];
+    Tile[][] Tiles = new Tile[COL][ROW];
     boolean TileMoved = false;
     private int SCORE = 0;
-    int BESTSCORE ;
+    private int BESTSCORE;
+    boolean YouWon =false;
+    boolean YouLost = false;
+    private int TARGET = 2048;
+    boolean canMove  ;
 
     public TilePanel() {
         setFocusable(true);
@@ -113,6 +117,7 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
 
     private void NewGameButtonActionPerformed(java.awt.event.ActionEvent evt) {
         newGame();
+        this.grabFocus();
         repaint();
     }
 
@@ -137,10 +142,28 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
         int h = (int) (tile.TileValueFont().getStringBounds(s, frc).getHeight());
         return h;
     }
+    
+    public int messageWidth(String s) {
+        AffineTransform affinetransform = new AffineTransform();
+        FontRenderContext frc = new FontRenderContext(affinetransform, true, true);
+        int w = (int) (FONT.getStringBounds(s, frc).getWidth());
+        return w;
+    }
+    
+    private int messageHeight(String s) {
+        AffineTransform affinetransform = new AffineTransform();
+        FontRenderContext frc = new FontRenderContext(affinetransform, true, true);
+        int h = (int) (FONT.getStringBounds(s, frc).getHeight());
+        return h;
+    }
 
     private void newGame() {
-        for (int i = 0; i < col; i++) {
-            for (int j = 0; j < row; j++) {
+        canMove = true;
+        YouWon=false;
+        YouLost=false;
+        SCORE = 0;
+        for (int i = 0; i < COL; i++) {
+            for (int j = 0; j < ROW; j++) {
                 Tiles[i][j] = new Tile();
             }
         }
@@ -157,8 +180,8 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
             x = r1.nextInt(4);
             y = r1.nextInt(4);
         } while (Tiles[x][y].getTileValue() != 0);
-        for (int i = 0; i < col; i++) {
-            for (int j = 0; j < row; j++) {
+        for (int i = 0; i < COL; i++) {
+            for (int j = 0; j < ROW; j++) {
                 if (i == x && j == y) {
                     Tiles[i][j].setTileValue(num);
                 }
@@ -186,8 +209,8 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
 
     private int emptySpace() {
         int a = 0;
-        for (int i = 0; i < col; i++) {
-            for (int j = 0; j < row; j++) {
+        for (int i = 0; i < COL; i++) {
+            for (int j = 0; j < ROW; j++) {
                 if (Tiles[i][j].isEmpty()) {
                     a++;
                 }
@@ -195,86 +218,65 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
         }
         return a;
     }
-    
+
     private boolean needAddTile() {
         return emptySpace() > 0;
     }
+
+    private int Score() {
+        return SCORE;
+    }    
     
-    private int Score()
-    {
-    return SCORE;
-    }
-    void mergeTilesDown() {
-        TileMoved = false;
-        for (int i = 0; i <= 3; i++) {
-            for (int j = 3; j > 0; j--) {
-                if (Tiles[i][j].getTileValue() == Tiles[i][j - 1].getTileValue()) {
-                    Tiles[i][j].setTileValue(2 * Tiles[i][j].getTileValue());
-                    Tiles[i][j - 1].setTileValue(0);
-                    SCORE += Tiles[i][j].getTileValue();
-                    down();
-                    TileMoved = true;
-                }
-            }
-        }
-    }
+    public boolean GameWon() {
+        for (int j = 0; j < ROW; j++) {
+            for (int i = 0; i < COL; i++) {
+                if (Tiles[i][j].getTileValue() == 128) {
+                    YouWon = true;
+                    canMove = false;
 
-    void mergeTilesUp() {
-        TileMoved = false;
-        for (int i = 0; i < col; i++) {
-            for (int j = 0; j < row - 1; j++) {
-                if (Tiles[i][j].getTileValue() == Tiles[i][j + 1].getTileValue()) {
-                    Tiles[i][j].setTileValue(2 * Tiles[i][j].getTileValue());
-                    Tiles[i][j + 1].setTileValue(0);
-                    SCORE += Tiles[i][j].getTileValue();
-                    up();
-                    TileMoved = true;
                 }
             }
         }
+        return YouWon;
     }
-
-    void mergeTilesRight() {
-        TileMoved = false;
-        for (int i = col - 1; i > 0; i--) {
-            for (int j = 0; j < 4; j++) {
-                if (Tiles[i][j].getTileValue() == Tiles[i - 1][j].getTileValue()) {
-                    Tiles[i][j].setTileValue(2 * Tiles[i][j].getTileValue());
-                    Tiles[i - 1][j].setTileValue(0);
-                    SCORE +=  Tiles[i][j].getTileValue();
-                    right();
-                    TileMoved = true;
+   
+    public boolean GameLost() {
+        for (int i = 0; i < COL - 1; i++) {
+            for (int j = 0; j < ROW - 1; j++) {
+                if (emptySpace() == 0
+                        && Tiles[i][j].getTileValue() != Tiles[i + 1][j].getTileValue()
+                        && Tiles[i][j].getTileValue() != Tiles[i][j + 1].getTileValue()) {
+                    canMove = false;
+                    YouLost = true;
                 }
             }
         }
-    }
-
-    void mergeTilesLeft() {
-        TileMoved = false;
-        for (int i = 0; i < col - 1; i++) {
-            for (int j = 0; j < row; j++) {
-                if (Tiles[i][j].getTileValue() == Tiles[i + 1][j].getTileValue()) {
-                    Tiles[i][j].setTileValue(2 * Tiles[i][j].getTileValue());
-                    Tiles[i + 1][j].setTileValue(0);
-                    SCORE += Tiles[i][j].getTileValue();
-                    left();
-                    TileMoved = true;
-                }
-            }
-        }
+        return YouLost;
     }
 
     public void down() {
         TileMoved = false;
-        for (int i = 0; i < col; i++) {
+        for (int i = 0; i < COL; i++) {
             int d = 0;
-            for (int j = row - 1; j >= 0; j--) {
+            for (int j = ROW - 1; j >= 0; j--) {
                 if (Tiles[i][j].isEmpty()) {
                     d++;
-                } else if (!Tiles[i][j].isEmpty() && j < 3 && d > 0) {
-                    Tiles[i][j + d].setTileValue(Tiles[i][j].getTileValue());
-                    Tiles[i][j].setTileValue(0);
-                    TileMoved = true;
+                } else if (j < 3) {
+                    if (d >= 0 && ROW - j - 1 > d && Tiles[i][j].getTileValue() == Tiles[i][j + d + 1].getTileValue()) {
+                        Tiles[i][j + d + 1].setTileValue(2 * Tiles[i][j].getTileValue());
+                        SCORE += 2 * Tiles[i][j].getTileValue();
+                        Tiles[i][j].setTileValue(0);
+                        TileMoved = true;
+                        d++;
+                    } else if (d > 0 && ROW - j - 1 > d && Tiles[i][j].getTileValue() != Tiles[i][j + d + 1].getTileValue()) {
+                        Tiles[i][j + d].setTileValue(Tiles[i][j].getTileValue());
+                        Tiles[i][j].setTileValue(0);
+                        TileMoved = true;
+                    } else if (d > 0 && ROW - j - 1 <= d) {
+                        Tiles[i][j + d].setTileValue(Tiles[i][j].getTileValue());
+                        Tiles[i][j].setTileValue(0);
+                        TileMoved = true;
+                    }
                 }
             }
         }
@@ -282,15 +284,27 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
 
     public void up() {
         TileMoved = false;
-        for (int i = 0; i < col; i++) {
+        for (int i = 0; i < COL; i++) {
             int d = 0;
-            for (int j = 0; j < row; j++) {
+            for (int j = 0; j < ROW; j++) {
                 if (Tiles[i][j].isEmpty()) {
                     d++;
-                } else if (!Tiles[i][j].isEmpty() && j > 0 && d > 0) {
-                    Tiles[i][j - d].setTileValue(Tiles[i][j].getTileValue());
-                    Tiles[i][j].setTileValue(0);
-                    TileMoved = true;
+                } else if (j > 0) {
+                    if (d >= 0 && j > d && Tiles[i][j].getTileValue() == Tiles[i][j - d - 1].getTileValue()) {
+                        Tiles[i][j - d - 1].setTileValue(2 * Tiles[i][j].getTileValue());
+                        SCORE +=2 *  Tiles[i][j].getTileValue();
+                        Tiles[i][j].setTileValue(0);
+                        TileMoved = true;
+                        d++;                       
+                    } else if (d > 0 && j > d && Tiles[i][j].getTileValue() != Tiles[i][j - d - 1].getTileValue()) {
+                        Tiles[i][j - d].setTileValue(Tiles[i][j].getTileValue());
+                        Tiles[i][j].setTileValue(0);
+                        TileMoved = true;
+                    } else if (d > 0 && j == d) {
+                        Tiles[i][j - d].setTileValue(Tiles[i][j].getTileValue());
+                        Tiles[i][j].setTileValue(0);
+                        TileMoved = true;
+                    }
                 }
             }
         }
@@ -298,15 +312,27 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
 
     private void right() {
         TileMoved = false;
-        for (int j = 0; j < row; j++) {
+        for (int j = 0; j < ROW; j++) {
             int d = 0;
-            for (int i = col - 1; i >= 0; i--) {
+            for (int i = COL - 1; i >= 0; i--) {
                 if (Tiles[i][j].getTileValue() == 0) {
                     d++;
-                } else if (Tiles[i][j].getTileValue() != 0 && i < 3 && d > 0) {
-                    Tiles[i + d][j].setTileValue(Tiles[i][j].getTileValue());
-                    Tiles[i][j].setTileValue(0);
-                    TileMoved = true;
+                } else if (i < 3) {
+                    if (d >= 0 && COL - i - 1 > d && Tiles[i][j].getTileValue() == Tiles[i + d + 1][j].getTileValue()) {
+                        Tiles[i + d + 1][j].setTileValue(2 * Tiles[i][j].getTileValue());
+                        SCORE += 2 * Tiles[i][j].getTileValue();
+                        Tiles[i][j].setTileValue(0);
+                        TileMoved = true;
+                        d++;                       
+                    } else if (d > 0 && COL - i - 1 > d && Tiles[i][j].getTileValue() != Tiles[i + d + 1][j].getTileValue()) {
+                        Tiles[i + d][j].setTileValue(Tiles[i][j].getTileValue());
+                        Tiles[i][j].setTileValue(0);
+                        TileMoved = true;
+                    } else if (d > 0 && COL - i - 1 <= d) {
+                        Tiles[i + d][j].setTileValue(Tiles[i][j].getTileValue());
+                        Tiles[i][j].setTileValue(0);
+                        TileMoved = true;
+                    }
                 }
             }
         }
@@ -314,20 +340,48 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
 
     private void left() {
         TileMoved = false;
-        for (int j = 0; j < row; j++) {
+        for (int j = 0; j < ROW; j++) {
             int d = 0;
-            for (int i = 0; i < col; i++) {
+            for (int i = 0; i < COL; i++) {
                 if (Tiles[i][j].getTileValue() == 0) {
                     d++;
-                } else if (Tiles[i][j].getTileValue() != 0 && i > 0 && d > 0) {
-                    Tiles[i - d][j].setTileValue(Tiles[i][j].getTileValue());
-                    Tiles[i][j].setTileValue(0);
-                    TileMoved = true;
+                } else if (i > 0) {
+                    if (d >= 0 && i > d && Tiles[i][j].getTileValue() == Tiles[i - d - 1][j].getTileValue()) {
+                        Tiles[i - d - 1][j].setTileValue(2 * Tiles[i][j].getTileValue());
+                        SCORE +=2 * Tiles[i][j].getTileValue();
+                        Tiles[i][j].setTileValue(0);
+                        TileMoved = true;
+                        d++;
+                    } else if (d > 0 && i > d && Tiles[i][j].getTileValue() != Tiles[i - d - 1][j].getTileValue()) {
+                        Tiles[i - d][j].setTileValue(Tiles[i][j].getTileValue());
+                        Tiles[i][j].setTileValue(0);
+                        TileMoved = true;
+                    } else if (d > 0 && i == d) {
+                        Tiles[i - d][j].setTileValue(Tiles[i][j].getTileValue());
+                        Tiles[i][j].setTileValue(0);
+                        TileMoved = true;
+                    }
                 }
             }
         }
     }
 
+    private void drawMessage(Graphics g2, String Message){
+        Graphics2D g = ((Graphics2D) g2);
+               
+        int w = messageWidth(Message);        
+        int h = messageHeight(Message);
+        g.drawString(Message, (PANEL_WIDTH-w)/2, (PANEL_HEIGHT+h)/2);
+    }
+  
+    private void drawScore(Graphics g, int score){
+       String s = "Your score:" + valueOf(score);
+       int w =  messageWidth(s);
+       int h = messageHeight(s);
+       g.drawString( s, (PANEL_WIDTH-w)/2, PANEL_HEIGHT/2 + 2* h);
+       
+   }
+    
     private void drawTile(Graphics g2, Tile tile, int x, int y) {
         Graphics2D g = ((Graphics2D) g2);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -345,20 +399,20 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
         g.setColor(tile.TileBackground(value));
         g.fillRoundRect(POSITION_X, POSITION_Y, TILE_SIZE, TILE_SIZE, 15, 15);
         g.setColor(tile.TileValueColor());
-        g.drawString(String.valueOf(value), POSITION_X + (TILE_SIZE - w) / 2, POSITION_Y + (TILE_SIZE + h) / 2-6);
+        g.drawString(String.valueOf(value), POSITION_X + (TILE_SIZE - w) / 2, POSITION_Y + (TILE_SIZE + h) / 2 - 6);
     }
 
     @Override
     public void paint(Graphics g2) {
         Graphics2D g = ((Graphics2D) g2);
-
+        ScoreLabel.setText(" SCORE: " + valueOf(Score()));
         super.paint(g);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
         g.setColor(Color.GRAY);
         g.fillRect(20, 150, 4 * TILE_SIZE + 25, 4 * TILE_SIZE + 25);
-        for (int j = 0; j < row; j++) {
-            for (int i = 0; i < col; i++) {
+        for (int j = 0; j < ROW; j++) {
+            for (int i = 0; i < COL; i++) {
                 g.setColor(Color.LIGHT_GRAY);
                 g.fillRoundRect(positionX(i), positionY(j), TILE_SIZE, TILE_SIZE, 15, 15);
                 if (Tiles[i][j].getTileValue() != 0) {
@@ -366,40 +420,59 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
                 }
             }
         }
+      if(GameWon()) {
+          canMove=false;
+          g.setColor(Color.WHITE);
+          g.fillRect(10, 140, 4 * TILE_SIZE + 40, 4 * TILE_SIZE + 40);
+            String Message1 = "Congrats!You WON!";
+            g.setColor(Color.BLUE);
+          drawMessage(g,Message1);
+          drawScore(g, SCORE);
+      }  
+      if(GameLost()){
+          canMove=false;
+          g.setColor(Color.LIGHT_GRAY);
+          g.fillRect(10, 140, 4 * TILE_SIZE + 40, 4 * TILE_SIZE + 40);
+            String Message1 = "Game over!";
+            g.setColor(Color.BLUE);
+          drawMessage(g, Message1);
+          drawScore(g,SCORE);
+      }
+      
+          
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+       if(canMove){
+        if ( e.getKeyCode() == KeyEvent.VK_DOWN) {
             down();
-            mergeTilesDown();
             if (needAddTile() && TileMoved) {
                 addTile();
             }
         }
-        if (e.getKeyCode() == KeyEvent.VK_UP && needAddTile()) {
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
             up();
-            mergeTilesUp();
             if (needAddTile() && TileMoved) {
                 addTile();
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             left();
-            mergeTilesLeft();
             if (needAddTile() && TileMoved) {
                 addTile();
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             right();
-            mergeTilesRight();
             if (needAddTile() && TileMoved) {
                 addTile();
             }
         }
-        repaint();
-        ScoreLabel.setText(" SCORE: " + valueOf(Score()));
+         repaint();
+       }
+                System.out.print(canMove);
+
     }
 
     @Override
