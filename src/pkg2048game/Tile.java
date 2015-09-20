@@ -12,7 +12,7 @@ public class Tile {
     }
 
     public Tile() {
-
+        this.TileValue = 0;
     }
 
     public int getTileValue() {
