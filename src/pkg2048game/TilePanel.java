@@ -9,8 +9,17 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import static java.lang.String.valueOf;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TilePanel extends javax.swing.JPanel implements KeyListener {
 
@@ -23,10 +32,10 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
     Tile[][] Tiles = new Tile[COL][ROW];
     boolean TileMoved = false;
     private int SCORE = 0;
-    private int BESTSCORE;
+    static private int BEST_SCORE;
     boolean YouWon = false;
     boolean YouLost = false;
-    private int TARGET = 2048;
+    final private int TARGET = 2048;
     boolean canMove;
 
     public TilePanel() {
@@ -119,6 +128,7 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
         newGame();
         this.grabFocus();
         repaint();
+        writeScoreToFile();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -128,6 +138,48 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
+
+    private static void readScoreFromFile() {
+        BufferedReader reader = null;
+        try {
+            File file = new File("score.txt");
+            reader = new BufferedReader(new FileReader(file));
+            String line = reader.readLine();
+            BEST_SCORE = Integer.parseInt(line);
+            System.out.print(line);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(TilePanel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(TilePanel.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException ex) {
+                Logger.getLogger(TilePanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    private int bestScore() {
+        if (BEST_SCORE < SCORE) {
+            BEST_SCORE = SCORE;
+        }
+        return BEST_SCORE;
+    }
+
+    private void writeScoreToFile() {
+        try {
+            FileWriter writer = new FileWriter("score.txt");
+            BufferedWriter bWriter = new BufferedWriter(writer);
+            bWriter.write(valueOf(bestScore()));
+            bWriter.close();
+
+        } catch (IOException ex) {
+            System.out.println(
+                    "Error writing to file '"
+                    + "score.txt" + "'");
+        }
+    }
 
     private int textWidth(String s, Tile tile) {
         AffineTransform affinetransform = new AffineTransform();
@@ -169,6 +221,7 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
         }
         addTile();
         addTile();
+        readScoreFromFile();
     }
 
     private void addTile() {
@@ -230,10 +283,9 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
     public boolean GameWon() {
         for (int j = 0; j < ROW; j++) {
             for (int i = 0; i < COL; i++) {
-                if (Tiles[i][j].getTileValue() == 128) {
+                if (Tiles[i][j].getTileValue() == TARGET) {
                     YouWon = true;
                     canMove = false;
-
                 }
             }
         }
@@ -368,7 +420,6 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
 
     private void drawMessage(Graphics g2, String Message) {
         Graphics2D g = ((Graphics2D) g2);
-
         int w = messageWidth(Message);
         int h = messageHeight(Message);
         g.drawString(Message, (PANEL_WIDTH - w) / 2, (PANEL_HEIGHT + h) / 2);
@@ -379,7 +430,6 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
         int w = messageWidth(s);
         int h = messageHeight(s);
         g.drawString(s, (PANEL_WIDTH - w) / 2, PANEL_HEIGHT / 2 + 2 * h);
-
     }
 
     private void drawTile(Graphics g2, Tile tile, int x, int y) {
@@ -405,7 +455,8 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
     @Override
     public void paint(Graphics g2) {
         Graphics2D g = ((Graphics2D) g2);
-        ScoreLabel.setText(" SCORE: " + valueOf(Score()));
+        ScoreLabel.setText(" SCORE:  " + valueOf(Score()));
+        BestScoreLabel.setText("BEST SCORE:  " + valueOf(bestScore()));
         super.paint(g);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
@@ -428,6 +479,7 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
             g.setColor(Color.BLUE);
             drawMessage(g, Message1);
             drawScore(g, SCORE);
+            writeScoreToFile();
         }
         if (GameLost()) {
             canMove = false;
@@ -437,8 +489,8 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
             g.setColor(Color.BLUE);
             drawMessage(g, Message1);
             drawScore(g, SCORE);
+            writeScoreToFile();
         }
-
     }
 
     @Override
@@ -470,7 +522,6 @@ public class TilePanel extends javax.swing.JPanel implements KeyListener {
             }
             repaint();
         }
-        System.out.print(canMove);
 
     }
 
